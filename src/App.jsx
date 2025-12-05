@@ -109,7 +109,7 @@ function Navbar({ cartItems }) {
 
 // ==================== HOME ====================
 function Home() {
-  const ADMIN_WHATSAPP = "6281228010210";
+  const ADMIN_WHATSAPP = "4915510753485";
   
   return (
     <section className="relative overflow-hidden pt-32 px-4 md:px-8 text-center flex flex-col items-center">
@@ -666,7 +666,7 @@ function Checkout({ cartItems }) {
 
 // ==================== SUCCESS PAGE ====================
 function Success() {
-  const ADMIN_WHATSAPP = "6281228010210";
+  const ADMIN_WHATSAPP = "4915510753485";
   const [orderData, setOrderData] = useState(null);
   const [cartItems, setCartItems] = useState([]);
   const [whatsappUrl, setWhatsappUrl] = useState('');

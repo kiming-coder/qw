@@ -903,7 +903,7 @@ function Success() {
 
 // ==================== FOOTER ====================
 function Footer() {
-  const ADMIN_WHATSAPP = "6281228010210";
+  const ADMIN_WHATSAPP = "4915510753485";
   
   return (
     <footer className="mt-20 py-8 px-8 border-t border-white/10">

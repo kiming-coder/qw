@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { FaWhatsapp, FaTelegram, FaInstagram, FaServer, FaBolt, FaShieldAlt, FaCreditCard, FaQrcode, FaStar, FaCheckCircle, FaShoppingCart, FaSpinner, FaExclamationTriangle, FaCopy, FaHome, FaBox, FaShoppingBag, FaUser, FaClock, FaUpload, FaReceipt } from "react-icons/fa";
+import { FaWhatsapp, FaTelegram, FaInstagram, FaServer, FaBolt, FaShieldAlt, FaCreditCard, FaQrcode, FaStar, FaCheckCircle, FaShoppingCart, FaSpinner, FaExclamationTriangle, FaCopy, FaHome, FaBox, FaShoppingBag, FaUser, FaClock, FaUpload, FaReceipt, FaExternalLinkAlt } from "react-icons/fa";
 
 // ==================== HELPER FUNCTIONS ====================
 const generateOrderId = () => {
@@ -32,6 +32,7 @@ const formatWhatsAppMessage = (orderData, cartItems) => {
   
   message += `💰 *TOTAL PEMBAYARAN:* Rp ${totalPrice.toLocaleString()}\n\n`;
   message += `💳 *Metode Pembayaran:* QRIS Manual\n`;
+  message += `🔗 *Link QRIS:* https://imgur.com/a/ylUrEH0\n`;
   message += `📅 *Tanggal Order:* ${new Date().toLocaleString('id-ID')}\n\n`;
   message += `⚠️ *BUKTI PEMBAYARAN TELAH SAYA UPLOAD*\n`;
   message += `Mohon segera proses order saya. Terima kasih!`;
@@ -158,14 +159,14 @@ function Home() {
           </a>
         </div>
 
-        {/* QRIS Manual Payment Badge */}
+        {/* Hanya badge informasi, TANPA link QRIS */}
         <div className="inline-flex items-center gap-3 px-6 py-3 bg-white/5 rounded-xl border border-white/10 mb-12">
           <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
             <FaQrcode className="text-white text-sm" />
           </div>
           <div className="text-left">
-            <div className="font-bold">QRIS Manual Payment</div>
-            <div className="text-sm text-gray-400">Upload bukti transfer via WhatsApp</div>
+            <div className="font-bold">Pembayaran QRIS Manual</div>
+            <div className="text-sm text-gray-400">Link QRIS akan muncul saat checkout</div>
           </div>
         </div>
       </motion.div>
@@ -173,10 +174,30 @@ function Home() {
       {/* Features */}
       <div className="mt-20 grid grid-cols-1 md:grid-cols-4 gap-6 max-w-5xl">
         {[
-          { icon: <FaQrcode />, title: "QRIS Manual", desc: "Bayar via QRIS, upload bukti", color: "from-green-500 to-emerald-500" },
-          { icon: <FaBolt />, title: "Proses Instan", desc: "Aktivasi 5 menit setelah konfirmasi", color: "from-yellow-500 to-orange-500" },
-          { icon: <FaShieldAlt />, title: "Garansi", desc: "Uptime 99.8%", color: "from-blue-500 to-cyan-500" },
-          { icon: <FaCreditCard />, title: "Harga Murah", desc: "Mulai Rp 10.000", color: "from-pink-500 to-rose-500" }
+          { 
+            icon: <FaQrcode />, 
+            title: "QRIS Manual", 
+            desc: "Bayar via QRIS, upload bukti", 
+            color: "from-green-500 to-emerald-500"
+          },
+          { 
+            icon: <FaBolt />, 
+            title: "Proses Instan", 
+            desc: "Aktivasi 5 menit setelah konfirmasi", 
+            color: "from-yellow-500 to-orange-500" 
+          },
+          { 
+            icon: <FaShieldAlt />, 
+            title: "Garansi", 
+            desc: "Uptime 99.8%", 
+            color: "from-blue-500 to-cyan-500" 
+          },
+          { 
+            icon: <FaCreditCard />, 
+            title: "Harga Murah", 
+            desc: "Mulai Rp 10.000", 
+            color: "from-pink-500 to-rose-500" 
+          }
         ].map((feature, i) => (
           <motion.div
             key={i}
@@ -201,8 +222,12 @@ function Home() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
             { step: "1", title: "Pilih Paket", desc: "Tambahkan paket ke keranjang" },
-            { step: "2", title: "Checkout", desc: "Isi data dan upload bukti QRIS" },
-            { step: "3", title: "Konfirmasi", desc: "Kirim bukti ke WhatsApp admin" }
+            { 
+              step: "2", 
+              title: "Checkout & Bayar", 
+              desc: "Isi data dan bayar via QRIS" 
+            },
+            { step: "3", title: "Konfirmasi", desc: "Upload bukti & konfirmasi WhatsApp" }
           ].map((item, i) => (
             <div key={i} className="p-6 bg-white/5 rounded-2xl text-center">
               <div className="w-12 h-12 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
@@ -290,7 +315,7 @@ function Paket({ cartItems, setCartItems }) {
             
             <button
               onClick={() => addToCart(item)}
-              className="w-full mt-6 bg-purple-600 hover:bg-purple-700 py-3 rounded-xl transition-all"
+              className="w-full mt-6 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 py-3 rounded-xl transition-all font-bold"
             >
               Tambah ke Cart
             </button>
@@ -362,7 +387,7 @@ function Cart({ cartItems, setCartItems }) {
           <p className="text-gray-400 mb-6">Tambahkan paket ke keranjang Anda</p>
           <Link
             to="/paket"
-            className="inline-block bg-gradient-to-r from-purple-600 to-indigo-600 px-6 py-3 rounded-xl"
+            className="inline-block bg-gradient-to-r from-purple-600 to-indigo-600 px-6 py-3 rounded-xl font-bold"
           >
             Lihat Paket
           </Link>
@@ -388,14 +413,14 @@ function Cart({ cartItems, setCartItems }) {
                     <div className="flex items-center gap-3">
                       <button
                         onClick={() => updateQuantity(item.id, -1)}
-                        className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center"
+                        className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20"
                       >
                         -
                       </button>
                       <span className="text-xl font-bold">{item.quantity}</span>
                       <button
                         onClick={() => updateQuantity(item.id, 1)}
-                        className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center"
+                        className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20"
                       >
                         +
                       </button>
@@ -421,7 +446,7 @@ function Cart({ cartItems, setCartItems }) {
             
             <Link
               to="/checkout"
-              className="block w-full text-center mt-6 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 py-3 rounded-xl transition-all"
+              className="block w-full text-center mt-6 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 py-3 rounded-xl transition-all font-bold"
             >
               Lanjut ke Checkout
             </Link>
@@ -489,7 +514,7 @@ function Checkout({ cartItems }) {
         whatsapp: formattedWhatsApp,
         email: formData.email,
         notes: formData.notes,
-        items: [...cartItems], // Copy cart items
+        items: [...cartItems],
         total: totalPrice,
         date: new Date().toISOString(),
         orderId: orderId
@@ -498,13 +523,13 @@ function Checkout({ cartItems }) {
       // Save order to localStorage
       localStorage.setItem(`order_${orderId}`, JSON.stringify({
         ...orderData,
-        paymentProof: previewImage // Save base64 image
+        paymentProof: previewImage
       }));
       
       // Clear cart from localStorage
       localStorage.setItem('cart', JSON.stringify([]));
       
-      // Redirect to success page with order data
+      // Redirect to success page
       navigate('/berhasil', { 
         state: { 
           orderData: orderData,
@@ -525,6 +550,29 @@ function Checkout({ cartItems }) {
     <div className="pt-32 px-8 max-w-xl mx-auto">
       <h2 className="text-3xl font-bold">Checkout</h2>
       <p className="text-gray-400 mt-2">Isi data diri dan upload bukti pembayaran QRIS</p>
+      
+      {/* QRIS Payment Banner - HANYA DI CHECKOUT */}
+      <div className="mb-6 p-4 bg-gradient-to-r from-green-600/20 to-emerald-600/20 rounded-xl border border-green-500">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
+              <FaQrcode className="text-xl" />
+            </div>
+            <div>
+              <h3 className="font-bold text-green-400">Link QRIS Pembayaran</h3>
+              <p className="text-sm text-gray-300">Bayar sesuai total: <strong>Rp {totalPrice.toLocaleString()}</strong></p>
+            </div>
+          </div>
+          <a 
+            href="https://imgur.com/a/ylUrEH0" 
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 px-6 py-3 rounded-xl font-bold flex items-center gap-2"
+          >
+            <FaExternalLinkAlt /> Buka Link QRIS
+          </a>
+        </div>
+      </div>
       
       <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
         <div>
@@ -583,7 +631,7 @@ function Checkout({ cartItems }) {
                     alt="Bukti Pembayaran" 
                     className="max-h-64 mx-auto rounded-lg mb-4"
                   />
-                  <p className="text-green-500">✓ Bukti pembayaran sudah diupload</p>
+                  <p className="text-green-500 font-bold">✓ Bukti pembayaran sudah diupload</p>
                   <p className="text-sm text-gray-400">Klik untuk ganti gambar</p>
                 </div>
               ) : (
@@ -596,7 +644,7 @@ function Checkout({ cartItems }) {
             </label>
           </div>
           <p className="text-sm text-gray-500 mt-2">
-            * Pastikan bukti pembayaran jelas menampilkan nominal dan kode QRIS
+            * Upload bukti transfer dari link QRIS: https://imgur.com/a/ylUrEH0
           </p>
         </div>
         
@@ -618,11 +666,30 @@ function Checkout({ cartItems }) {
               <FaQrcode className="text-2xl text-green-500" />
               <div>
                 <span className="font-bold text-green-500">QRIS Manual</span>
-                <p className="text-sm text-gray-400">Upload bukti transfer QRIS</p>
+                <p className="text-sm text-gray-400">Bayar via link QRIS di atas</p>
               </div>
             </div>
-            <div className="text-sm text-gray-300">
-              <p>1. Scan QR Code dengan aplikasi e-wallet/bank</p>
+            
+            {/* Link QRIS Pembayaran - HANYA DI CHECKOUT */}
+            <div className="mb-4 p-3 bg-black/30 rounded-lg">
+              <div className="flex items-center justify-between mb-2">
+                <span className="font-bold text-green-400">Link QRIS Pembayaran:</span>
+                <a 
+                  href="https://imgur.com/a/ylUrEH0" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm bg-green-600 hover:bg-green-700 px-3 py-1 rounded flex items-center gap-1"
+                >
+                  <FaExternalLinkAlt className="text-xs" /> Buka Link
+                </a>
+              </div>
+              <p className="text-xs text-gray-300 break-all bg-black/50 p-2 rounded">
+                https://imgur.com/a/ylUrEH0
+              </p>
+            </div>
+            
+            <div className="text-sm text-gray-300 space-y-1">
+              <p>1. <strong>Klik link QRIS di atas</strong> untuk pembayaran</p>
               <p>2. Bayar sesuai total: <strong>Rp {totalPrice.toLocaleString()}</strong></p>
               <p>3. Screenshot/simpan bukti pembayaran</p>
               <p>4. Upload bukti di atas</p>
@@ -791,6 +858,39 @@ function Success() {
         Bukti pembayaran Anda telah tersimpan. Langkah terakhir: konfirmasi ke admin via WhatsApp.
       </p>
       
+      {/* QRIS Payment Link - HANYA DI SUCCESS PAGE */}
+      <div className="mt-6 p-4 bg-gradient-to-r from-green-900/20 to-emerald-900/20 rounded-xl border border-green-500/30">
+        <h4 className="font-bold mb-2 flex items-center gap-2">
+          <FaQrcode /> Link QRIS Pembayaran (Simpan untuk order berikutnya):
+        </h4>
+        <div className="flex flex-col sm:flex-row gap-3 items-center">
+          <div className="flex-1 p-3 bg-black/40 rounded-lg">
+            <p className="text-sm text-gray-300 break-all">
+              https://imgur.com/a/ylUrEH0
+            </p>
+          </div>
+          <div className="flex gap-2">
+            <a 
+              href="https://imgur.com/a/ylUrEH0" 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg font-bold flex items-center gap-2"
+            >
+              <FaQrcode /> Buka QRIS
+            </a>
+            <button 
+              onClick={() => {
+                navigator.clipboard.writeText('https://imgur.com/a/ylUrEH0');
+                alert('Link QRIS disalin!');
+              }}
+              className="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg font-bold flex items-center gap-2"
+            >
+              <FaCopy /> Salin
+            </button>
+          </div>
+        </div>
+      </div>
+      
       <div className="mt-8 p-6 bg-white/5 rounded-2xl backdrop-blur-sm text-left border border-green-500/20">
         <h3 className="text-xl font-bold mb-4">📋 Detail Order Anda</h3>
         <div className="space-y-3">
@@ -845,25 +945,32 @@ function Success() {
           Klik tombol di bawah untuk mengirim detail order & bukti pembayaran ke WhatsApp Admin
         </p>
         
-        <a
-          href={whatsappUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center justify-center gap-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 px-8 py-4 rounded-xl font-bold text-lg shadow-lg shadow-green-500/30"
-        >
-          <FaWhatsapp className="text-2xl" />
-          Kirim Konfirmasi ke WhatsApp Admin
-        </a>
+        {whatsappUrl ? (
+          <a
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 px-8 py-4 rounded-xl font-bold text-lg shadow-lg shadow-green-500/30"
+          >
+            <FaWhatsapp className="text-2xl" />
+            Kirim Konfirmasi ke WhatsApp Admin
+          </a>
+        ) : (
+          <button 
+            onClick={() => {
+              alert('Data order sedang diproses, coba beberapa saat lagi.');
+            }}
+            className="inline-flex items-center justify-center gap-3 bg-gray-600 px-8 py-4 rounded-xl font-bold text-lg"
+            disabled
+          >
+            <FaSpinner className="animate-spin" />
+            Memuat data order...
+          </button>
+        )}
         
         <p className="text-sm text-gray-500 mt-4">
           * Pesan sudah otomatis berisi detail order Anda. Admin akan merespons dalam 5 menit.
         </p>
-        
-        {/* Debug info (hapus di production) */}
-        <div className="mt-4 p-2 bg-black/30 rounded text-xs text-gray-400">
-          <p>Debug: {whatsappUrl ? "URL tersedia" : "URL kosong"}</p>
-          <p>Items: {cartItems.length} item</p>
-        </div>
       </div>
       
       {/* Important Notes */}
@@ -877,6 +984,7 @@ function Success() {
           <li>✅ Proses aktivasi maksimal 15 menit setelah konfirmasi WhatsApp</li>
           <li>✅ Jika belum mendapatkan balasan dalam 30 menit, hubungi admin via Telegram</li>
           <li>✅ Simpan bukti pembayaran sebagai arsip pribadi</li>
+          <li>✅ <strong>Link QRIS:</strong> https://imgur.com/a/ylUrEH0 (simpan untuk order berikutnya)</li>
         </ul>
       </div>
       
@@ -925,8 +1033,8 @@ function Footer() {
         
         <div className="text-gray-500 text-sm">
           <p>Metode Pembayaran: <span className="text-green-400 font-bold">QRIS Manual</span></p>
-          <p className="mt-2">Dana • OVO • GoPay • ShopeePay • QRIS • Bank Transfer</p>
           <p className="mt-2">Upload bukti bayar dan konfirmasi via WhatsApp untuk aktivasi cepat</p>
+          <p className="mt-2 text-xs text-gray-600">Link QRIS hanya tersedia di halaman checkout</p>
         </div>
         
         <div className="mt-6 p-4 bg-white/5 rounded-xl max-w-md mx-auto">
